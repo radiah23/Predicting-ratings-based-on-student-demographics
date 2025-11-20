@@ -1,0 +1,81 @@
+---
+title: "Practise"
+format: html
+editor: visual
+---
+
+```{r}
+library(readr)
+School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("Downloads/School_Year_2022-2023_Statewide_Accountability_Ratings_20251119.csv")
+View(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
+```
+```{r}
+unique(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
+```
+
+```{r}
+#Economically disadvantaged grouped by regions 
+library(tidyverse)
+data <-School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 |>
+  mutate(`%\nEconomically\nDisadvantaged` = 
+           as.numeric(str_replace_all(`%\nEconomically\nDisadvantaged`, "[^0-9.]", "")))
+
+```
+```{r}
+plot_economical_region <- data|>
+ select(District, `%\nEconomically\nDisadvantaged`)|>
+  group_by(District) |>
+  summarise(avg_disadvantaged = mean( `%\nEconomically\nDisadvantaged`, na.rm = TRUE)) |>
+  arrange((avg_disadvantaged))
+plot_economical_region
+```
+```{r}
+lowest_10_region <- plot_economical_region |> head(10)
+```
+```{r}
+#plotting the data 
+ggplot(lowest_10_region, aes(x = reorder(District, avg_disadvantaged), 
+                                   y = avg_disadvantaged, 
+                                   fill = avg_disadvantaged)) +
+  geom_col() +
+  coord_flip() +
+   scale_fill_gradient(
+    low = "deepskyblue",   
+    high = "springgreen3"  
+  ) +
+  labs(
+    title = "Districts with the Lowest Average Economically Disadvantaged Student Demographic (Top 10)",
+    x = "District",
+    y = "Economically Disadvantaged (%)",
+    fill = "Disadvantaged %"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+      panel.grid.major=  element_blank(),
+      panel.grid.minor = element_blank())
+      
+```
+
+#Plot 2
+`Overall\nRating`
+```{r}
+ggplot(data, aes(x = `Overall\nRating`, fill = `Overall\nRating`)) +
+  geom_bar() +
+  scale_fill_brewer(palette = "YlGnBu") + 
+  theme_minimal() +
+  labs(
+    title = "Count of Districts by Rating Categories",
+    x = "Rating Category",
+    y = "Number of Districts",
+    fill = "Overall Rating"
+  )+
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"),
+      panel.grid.major=  element_blank(),
+      panel.grid.minor = element_blank())
+
+
+```
+
+```
+
