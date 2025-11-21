@@ -4,11 +4,17 @@ format: html
 editor: visual
 ---
 
+Our data comes from the Texas Education Agency program, run by the state government, that tracks public school data across Texas. Within this, we will be using the 2025 Accountability System reports, which provide information on student achievement based on school and school district, considering a large number of variables. 
+
+Our research question is: Do schools with higher shares of economically disadvantaged students have lower overall scores? Our response variable will be the overall score, which represents a school's overall rating based on student achievement. Our explanatory variables will be percent economically disadvantaged, whether or not the school has earned distinction, and the academic growth score.
+
+
 ```{r}
 library(readr)
-School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("Downloads/School_Year_2022-2023_Statewide_Accountability_Ratings_20251119.csv")
-View(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
+School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("School_Year_2022-2023_Statewide_Accountability_Ratings_20251119.csv")
+#View(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
 ```
+
 ```{r}
 unique(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
 ```
@@ -21,6 +27,7 @@ data <-School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 |>
            as.numeric(str_replace_all(`%\nEconomically\nDisadvantaged`, "[^0-9.]", "")))
 
 ```
+
 ```{r}
 plot_economical_region <- data|>
  select(District, `%\nEconomically\nDisadvantaged`)|>
@@ -29,9 +36,13 @@ plot_economical_region <- data|>
   arrange((avg_disadvantaged))
 plot_economical_region
 ```
+
 ```{r}
 lowest_10_region <- plot_economical_region |> head(10)
 ```
+
+# Plot 1
+
 ```{r}
 #plotting the data 
 ggplot(lowest_10_region, aes(x = reorder(District, avg_disadvantaged), 
@@ -56,8 +67,8 @@ ggplot(lowest_10_region, aes(x = reorder(District, avg_disadvantaged),
       
 ```
 
-#Plot 2
-`Overall\nRating`
+# Plot 2 `Overall\nRating`
+
 ```{r}
 ggplot(data, aes(x = `Overall\nRating`, fill = `Overall\nRating`)) +
   geom_bar() +
@@ -77,5 +88,28 @@ ggplot(data, aes(x = `Overall\nRating`, fill = `Overall\nRating`)) +
 
 ```
 
+
+# Plot 3 `Academic Growth Score`
+```{r}
+#Academic growth score and overall rating
+data <- data |>
+  mutate(
+    `Academic\nGrowth\nScore` = as.numeric(str_replace_all(`Academic\nGrowth\nScore`, "[^0-9.]", "")),
+    `Overall\nScore` = as.numeric(str_replace_all(`Overall\nScore`, "[^0-9.]", ""))
+  )
+
+ggplot(data, aes(x = `Academic\nGrowth\nScore`, y = `Overall\nScore`)) +
+  geom_point(position = "jitter", na.rm = TRUE) +
+  theme_minimal() +
+  labs(
+    title = "Academic Growth and Overall Rating",
+    x = "Academic Growth Score",
+    y = "Overall Score"
+  ) +
+  #scale_x_continuous() +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+  )
 ```
 
+\`\`\`
