@@ -1,7 +1,8 @@
 ---
 title: "An Exploration of the Texas Education Agency 2022-2023 Accountability Ratings Dataset"
-format: html
+format: pdf
 editor: visual
+author: Radiah Khan, Mercer Mercer, Nafisa Mohamed, Catherine Weeks
 ---
 
 Our data comes from the Texas Education Agency program, run by the state government, that tracks public school data across Texas. Within this, we will be using the 2025 Accountability System reports, which provide information on student achievement based on school and school district, considering a large number of variables.
