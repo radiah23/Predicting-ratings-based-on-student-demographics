@@ -16,7 +16,11 @@ School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("Sch
 ```
 
 ```{r}
-unique(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
+library(janitor)
+cleaned_name_school <- clean_names(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
+```
+```{r}
+colnames(cleaned_name_school)
 ```
 
 ```{r}
@@ -26,13 +30,25 @@ data <-School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 |>
   mutate(`%\nEconomically\nDisadvantaged` = 
            as.numeric(str_replace_all(`%\nEconomically\nDisadvantaged`, "[^0-9.]", "")))
 
+<<<<<<< HEAD
+=======
+data <- cleaned_name_school |>
+  mutate(econ_disadvantaged = as.numeric( str_replace_all(percent_economically_disadvantaged , "[^0-9.]", "")))
+data
+>>>>>>> 8da4adcdba1d2827f7f3c733a4691d9948e796bb
 ```
 
 ```{r}
 plot_economical_region <- data|>
+<<<<<<< HEAD
  select(District, `%\nEconomically\nDisadvantaged`)|>
   group_by(District) |>
   summarise(avg_disadvantaged = mean( `%\nEconomically\nDisadvantaged`, na.rm = TRUE)) |>
+=======
+ select(district , econ_disadvantaged)|>
+  group_by(district) |>
+  summarise(avg_disadvantaged = mean(econ_disadvantaged, na.rm = TRUE)) |>
+>>>>>>> 8da4adcdba1d2827f7f3c733a4691d9948e796bb
   arrange((avg_disadvantaged))
 plot_economical_region
 ```
@@ -45,7 +61,7 @@ lowest_10_region <- plot_economical_region |> head(10)
 
 ```{r}
 #plotting the data 
-ggplot(lowest_10_region, aes(x = reorder(District, avg_disadvantaged), 
+ggplot(lowest_10_region, aes(x = reorder(district, avg_disadvantaged), 
                                    y = avg_disadvantaged, 
                                    fill = avg_disadvantaged)) +
   geom_col() +
@@ -70,9 +86,13 @@ ggplot(lowest_10_region, aes(x = reorder(District, avg_disadvantaged),
 The horizontal bar chart of the ten districts with the lowest average percent economically disadvantaged highlights a small group of districts and charter schools with very low concentrations of economically disadvantaged students. Brock ISD and Trivium Academy stand out at the top of this list, followed by Leadership Prep School and a mix of charter and small district programs; the x-axis values show these averages are near or below single-digit percentages. This pattern suggests these districts are outliers in the dataset, and because they are small or specialized (charter and specialty schools), their demographic profiles differ substantially from the statewide mix — an important caveat when comparing demographic measures to performance outcomes.
 
 # Plot 2 `Overall\nRating`
+```{r}
+colnames(data)
+```
+
 
 ```{r}
-ggplot(data, aes(x = `Overall\nRating`, fill = `Overall\nRating`)) +
+ggplot(data, aes(x = overall_rating, fill = overall_rating)) +
   geom_bar() +
   scale_fill_brewer(palette = "YlGnBu") + 
   theme_minimal() +
@@ -98,11 +118,11 @@ The rating-distribution bar chart shows most districts receive mid-to-high ratin
 #Academic growth score and overall rating
 data <- data |>
   mutate(
-    `Academic\nGrowth\nScore` = as.numeric(str_replace_all(`Academic\nGrowth\nScore`, "[^0-9.]", "")),
-    `Overall\nScore` = as.numeric(str_replace_all(`Overall\nScore`, "[^0-9.]", ""))
+    academic_growth_score = as.numeric(str_replace_all(academic_growth_score, "[^0-9.]", "")),
+    overall_score = as.numeric(str_replace_all(overall_score, "[^0-9.]", ""))
   )
 
-ggplot(data, aes(x = `Academic\nGrowth\nScore`, y = `Overall\nScore`)) +
+ggplot(data, aes(x = academic_growth_score, y = overall_score)) +
   geom_point(position = "jitter", na.rm = TRUE) +
   theme_minimal() +
   labs(
@@ -117,3 +137,43 @@ ggplot(data, aes(x = `Academic\nGrowth\nScore`, y = `Overall\nScore`)) +
 ```
 
 The scatterplot of Academic Growth Score versus Overall Score reveals a clear positive relationship: higher academic growth scores tend to accompany higher overall scores, with many schools clustered along an upward trend from roughly 50–60 overall at lower growth values to 85–100 overall at higher growth values. The spread is wider at lower growth levels and tighter near the top, suggesting a ceiling effect where very high growth scores correspond to consistently high overall scores; this reinforces that academic growth is an important predictor of overall performance, although variability at lower growth levels indicates other factors also influence overall score.
+
+
+#Variables 
+
+#Filtering it to 9-12 
+```{r}
+filtered_df <- data |>
+  filter(grades_served == "09 - 12")
+filtered_df
+```
+```{r}
+filtered_df_pivoted <- filtered_df |>
+  pivot_longer(
+    cols = starts_with("distinction_"),
+    values_to = "distinction_status",
+    names_to  = "Distinction Type"
+  ) 
+filtered_df_pivoted
+```
+
+
+```{r}
+colnames(filtered_df_pivoted)
+```
+```{r}
+final_df <- filtered_df_pivoted |>
+  group_by(campus, district) |>
+  summarise(
+    number_of_students = first(number_of_students), #to get the unique values
+    academic_growth_score = first(academic_growth_score),
+    econ_disadvantaged = first(econ_disadvantaged),
+    overall_score = first(overall_score),
+    school_progress_score = first(school_progress_score),
+    distinction_score = sum(distinction_status  == "Earned", na.rm = TRUE),
+    .groups = "drop"
+  )
+final_df
+
+```
+
