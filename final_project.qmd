@@ -20,19 +20,17 @@ unique(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
 ```
 
 ```{r}
-#Economically disadvantaged grouped by regions 
 library(tidyverse)
-data <-School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 |>
-  mutate(`%\nEconomically\nDisadvantaged` = 
-           as.numeric(str_replace_all(`%\nEconomically\nDisadvantaged`, "[^0-9.]", "")))
 
+data <- School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 |>
+  mutate(econ_disadvantaged = as.numeric( str_replace_all(`%\nEconomically\nDisadvantaged`, "[^0-9.]", "")))
 ```
 
 ```{r}
 plot_economical_region <- data|>
- select(District, `%\nEconomically\nDisadvantaged`)|>
+ select(District, econ_disadvantaged)|>
   group_by(District) |>
-  summarise(avg_disadvantaged = mean( `%\nEconomically\nDisadvantaged`, na.rm = TRUE)) |>
+  summarise(avg_disadvantaged = mean(econ_disadvantaged, na.rm = TRUE)) |>
   arrange((avg_disadvantaged))
 plot_economical_region
 ```
