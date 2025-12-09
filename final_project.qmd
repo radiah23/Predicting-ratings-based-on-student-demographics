@@ -26,29 +26,16 @@ colnames(cleaned_name_school)
 ```{r}
 #Economically disadvantaged grouped by regions 
 library(tidyverse)
-data <-School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 |>
-  mutate(`%\nEconomically\nDisadvantaged` = 
-           as.numeric(str_replace_all(`%\nEconomically\nDisadvantaged`, "[^0-9.]", "")))
-
-<<<<<<< HEAD
-=======
-data <- cleaned_name_school |>
-  mutate(econ_disadvantaged = as.numeric( str_replace_all(percent_economically_disadvantaged , "[^0-9.]", "")))
-data
->>>>>>> 8da4adcdba1d2827f7f3c733a4691d9948e796bb
+data <-cleaned_name_school |>
+  mutate(percent_economically_disadvantaged = 
+           as.numeric(str_replace_all(percent_economically_disadvantaged, "[^0-9.]", "")))
 ```
 
 ```{r}
-plot_economical_region <- data|>
-<<<<<<< HEAD
- select(District, `%\nEconomically\nDisadvantaged`)|>
-  group_by(District) |>
-  summarise(avg_disadvantaged = mean( `%\nEconomically\nDisadvantaged`, na.rm = TRUE)) |>
-=======
- select(district , econ_disadvantaged)|>
+plot_economical_region <- data |>
+ select(district , percent_economically_disadvantaged)|>
   group_by(district) |>
-  summarise(avg_disadvantaged = mean(econ_disadvantaged, na.rm = TRUE)) |>
->>>>>>> 8da4adcdba1d2827f7f3c733a4691d9948e796bb
+  summarise(avg_disadvantaged = mean(percent_economically_disadvantaged, na.rm = TRUE)) |>
   arrange((avg_disadvantaged))
 plot_economical_region
 ```
@@ -167,7 +154,7 @@ final_df <- filtered_df_pivoted |>
   summarise(
     number_of_students = first(number_of_students), #to get the unique values
     academic_growth_score = first(academic_growth_score),
-    econ_disadvantaged = first(econ_disadvantaged),
+    percent_economically_disadvantaged = first(percent_economically_disadvantaged),
     overall_score = first(overall_score),
     school_progress_score = first(school_progress_score),
     distinction_score = sum(distinction_status  == "Earned", na.rm = TRUE),
