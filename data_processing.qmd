@@ -9,7 +9,6 @@ author:
 - Catherine Weeks
 ---
 
-
 ```{r}
 library(readr)
 School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("School_Year_2022-2023_Statewide_Accountability_Ratings_20251119.csv")
@@ -20,6 +19,7 @@ School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("Sch
 library(janitor)
 cleaned_name_school <- clean_names(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
 ```
+
 ```{r}
 colnames(cleaned_name_school)
 ```
@@ -41,14 +41,16 @@ plot_economical_region <- data |>
 plot_economical_region
 ```
 
-#Variables 
+#Variables
 
-#Filtering it to 9-12 
+#Filtering it to 9-12
+
 ```{r}
 filtered_df <- data |>
   filter(grades_served == "09 - 12")
 filtered_df
 ```
+
 ```{r}
 filtered_df_pivoted <- filtered_df |>
   pivot_longer(
@@ -59,10 +61,10 @@ filtered_df_pivoted <- filtered_df |>
 filtered_df_pivoted
 ```
 
-
 ```{r}
 colnames(filtered_df_pivoted)
 ```
+
 ```{r}
 final_df <- filtered_df_pivoted |>
   group_by(campus, district) |>
@@ -78,4 +80,3 @@ final_df <- filtered_df_pivoted |>
 final_df
 
 ```
-
