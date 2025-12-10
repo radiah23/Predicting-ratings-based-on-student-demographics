@@ -10,6 +10,8 @@ author:
 ---
 
 ```{r}
+library(tidyverse)
+library(broom)
 library(readr)
 School_Year_2022_2023_Statewide_Accountability_Ratings_20251119 <- read_csv("School_Year_2022-2023_Statewide_Accountability_Ratings_20251119.csv")
 #View(School_Year_2022_2023_Statewide_Accountability_Ratings_20251119)
@@ -80,3 +82,136 @@ final_df <- filtered_df_pivoted |>
 final_df
 
 ```
+
+There were 1394 data Now 1356 #Model Selection
+
+```{r}
+final_df[final_df == "."] <- NA
+
+```
+
+```{r}
+final_df$overall_score <- as.numeric(final_df$overall_score)
+
+```
+
+```{r}
+final_df <- final_df|>
+  filter(
+    !is.na(overall_score))
+
+```
+
+```{r}
+colnames(final_df)
+```
+
+#Model and nested model #Nested Model : #Automated selection
+
+```{r}
+final_df$academic_growth_score <- as.numeric(final_df$academic_growth_score)
+final_df$distinction_score <- as.numeric(final_df$distinction_score)
+final_df$school_progress_score<- as.numeric(final_df$school_progress_score)
+final_df$percent_economically_disadvantaged<- as.numeric(final_df$percent_economically_disadvantaged)
+final_df$number_of_students<- as.numeric(final_df$number_of_students)
+```
+
+```{r}
+#Unlogged
+reduced_model <-
+  lm(overall_score ~ academic_growth_score+distinction_score+ school_progress_score, data = final_df )
+summary(reduced_model)
+plot(reduced_model)
+
+```
+
+```{r}
+#logged
+reduced_model_logged <-
+  lm(log(overall_score) ~ academic_growth_score+distinction_score+ school_progress_score, data = final_df )
+summary(reduced_model_logged)
+```
+
+```{r}
+plot(reduced_model_logged)
+```
+
+```{r}
+full_model <- 
+  lm(overall_score ~ academic_growth_score+distinction_score+ school_progress_score + percent_economically_disadvantaged+number_of_students, data = final_df )
+summary(full_model)
+```
+
+```{r}
+plot(full_model)
+```
+
+```{r}
+ggplot(reduced_model |> augment(), aes(x= .fitted, y = .resid)) +
+  geom_point()+
+  geom_hline(yintercept = 0, col ="red") +
+  labs(title =  "xx",
+       x = "xx",
+       y= "yY") +
+  theme_minimal()
+```
+
+#Model Selection
+
+```{r}
+#Forward --> AIC metric
+step(reduced_model, scope = list(lower = reduced_model,
+                                 upper = full_model),
+     direction = "forward")
+```
+
+```{r}
+reduced_model |>
+  glance()
+```
+```{r}
+full_model |>
+  glance()
+```
+
+```{r}
+library(car)
+vif(reduced_model)
+vif(full_model)
+
+```
+#Influential points
+```{r}
+library(broom)
+full_augmented <- augment(full_model)
+  full_augmented$campus <- final_df$campus
+  select(.cooksd, .std.resid, .hat, .sigma, overall_score, academic_growth_score, distinction_score, school_progress_score,overall_score,percent_economically_disadvantaged, number_of_students ) 
+full_augmented
+```
+
+
+#Threshold valueee
+```{r}
+#Sample size = 1356
+
+leverage_threshold <- 2 * (6)/1356
+leverage_threshold
+
+```
+```{r}
+library(ggplot2)
+ggplot(full_augmented, aes(y = .hat)) +
+  geom_point() +
+geom_hline(yintercept = 0.008849558,
+             color = "blue") +  
+  coord_flip()+
+  theme_minimal()
+```
+
+
+
+
+
+
+
+
