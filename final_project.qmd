@@ -6,7 +6,7 @@ author: Radiah Khan, Mercer Mercer, Nafisa Mohamed, Catherine Weeks
 bibliography: references.bib
 ---
 
-##Introduction
+# Introduction
 
 Through this paper, we aim to address the question: Do schools in Texas with higher percentages of economically disadvantaged students have lower accountability ratings? To address this, we sourced our data from Texas’s annual academic accountability ratings, which it provides for all of its public and charter schools. This question is of particular interest now because the Academic accountability ratings are the benchmark the Texas Education Agency (TEA) uses to take over underperforming districts[@texaseducationagency2025]. This adds additional questions to what makes a school at risk for being taken over. The previous two districts to be taken over, Houston ISD and Fort Worth ISD, both had a large percentage of economically disadvantaged students. Some districts have begun redrawing their boundaries to avoid government takeovers[@edison2025]. If schools that predominantly serve economically disadvantaged students are closing to avoid a government takeover, this would cause an undue burden on those students, who would then have to travel further to get to classes, which can already be a barrier to education. Texas has also recently updated the criteria in its accountability rating system, which some teachers and superintendents claim has made earning a passing grade more difficult, potentially affecting whether student economic status influences academic ratings. Previous research has suggested a connection between a student's economic status and school performance. For example, a study from Stanford examining all public school districts in the United States found a strong relationship between district socioeconomic status and average academic achievement [@seanf.reardon2016]. Another study found a strong connection between student socioeconomic status and student achievement[@jenniferelizabethbarry2006]. But neither of these are recent or uses the data that Texas uses to internally select what it considers to be failing schools. Our paper aims to provide additional insight into how Texas’s academic achievement ratings relate to students' socioeconomic status, given the state’s new academic achievement rating system. Texas’s academic accountability rating system reports multiple variables containing information on school performance, but the ones of interest to us are as follows: Academic Growth Score, Overall Score, School Progress Score, and multiple variables indicating distinction in particular areas, which we have combined into a single variable that tracks total earned distinctions.
 
@@ -46,7 +46,7 @@ plot_economical_region
 lowest_10_region <- plot_economical_region |> head(10)
 ```
 
-# Plot 1
+## Plot 1
 
 ```{r}
 #plotting the data 
@@ -74,7 +74,7 @@ ggplot(lowest_10_region, aes(x = reorder(district, avg_disadvantaged),
 
 The horizontal bar chart of the ten districts with the lowest average percent economically disadvantaged highlights a small group of districts and charter schools with very low concentrations of economically disadvantaged students. Brock ISD and Trivium Academy stand out at the top of this list, followed by Leadership Prep School and a mix of charter and small district programs; the x-axis values show these averages are near or below single-digit percentages. This pattern suggests these districts are outliers in the dataset, and because they are small or specialized (charter and specialty schools), their demographic profiles differ substantially from the statewide mix — an important caveat when comparing demographic measures to performance outcomes.
 
-# Plot 2 `Overall\nRating`
+## Plot 2 `Overall\nRating`
 
 ```{r}
 colnames(data)
@@ -101,7 +101,7 @@ ggplot(data, aes(x = overall_rating, fill = overall_rating)) +
 
 The rating-distribution bar chart shows most districts receive mid-to-high ratings: B and C are the most common categories (with B the largest, followed by C and A), while D, F, and Not Rated are substantially less frequent. In other words, most districts fall into the mid-to-high rating range, creating a central peak with short tails at both the high and low ends. This shape means the distribution is clustered rather than widely spread, so many districts have similar overall ratings and only a minority sit at the extremes. Practically, that implies comparisons based on letter grades will group many districts together and finer distinctions will rely on the underlying numeric scores or other measures to separate performance within that large central mass.
 
-# Plot 3 `Academic Growth Score`
+## Plot 3 `Academic Growth Score`
 
 ```{r}
 #Academic growth score and overall rating
@@ -127,9 +127,9 @@ ggplot(data, aes(x = academic_growth_score, y = overall_score)) +
 
 The scatterplot of Academic Growth Score versus Overall Score reveals a clear positive relationship: higher academic growth scores tend to accompany higher overall scores, with many schools clustered along an upward trend from roughly 50–60 overall at lower growth values to 85–100 overall at higher growth values. The spread is wider at lower growth levels and tighter near the top, suggesting a ceiling effect where very high growth scores correspond to consistently high overall scores; this reinforces that academic growth is an important predictor of overall performance, although variability at lower growth levels indicates other factors also influence overall score.
 
-#Variables
+# Variables
 
-#Filtering it to 9-12
+## Filtering it to 9-12
 
 ```{r}
 filtered_df <- data |>
