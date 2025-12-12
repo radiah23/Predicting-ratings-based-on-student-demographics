@@ -172,13 +172,45 @@ final_df
 
 # Methods
 
-The data set used in this report is from the Texas Education Agency’s 2025 State, Region, District, and Campus-Level Accountability Report. The data in this report originates from public and charter schools in Texas overseen by the Texas Education Agency (TEA), who are required to submit all student standardized tests and other academic performance data [@texaseducationagency2025]. Each observation in this data set represents a different campus. The original data contains many variables related to school performance, but in this paper we will focus on schools’ Overall Score, their Academic Growth Scores, their Distinction Scores, the number of students, and the percentage of students who are economically disadvantaged. 
+The data set used in this report is from the Texas Education Agency’s 2025 State, Region, District, and Campus-Level Accountability Report. The data in this report originates from public and charter schools in Texas overseen by the Texas Education Agency (TEA), who are required to submit all student standardized tests and other academic performance data [@texaseducationagency2025]. Each observation in this data set represents a different campus. The original data contains many variables related to school performance, but in this paper we will focus on schools’ Overall Score, their Academic Growth Scores, their Distinction Scores, the number of students, and the percentage of students who are economically disadvantaged.
 
-The overall score represents the school’s final accountability rating on a 0-100 scale. It represents a schoolwide summary of academic performance, progress, and equity. This score is calculated by using three accountability domains: Student Achievement, School Progress, and Closing the Gaps. For this score, 70% is made up of either the Student Achievement or School progress (it picks the “better outcome”) and 30% of it is from their Closing the Gaps domain score (which evaluates how well a school is supporting the performance of specific students, specifically economically disadvantaged students, students from certain racial groups, and special needs students among others). The data handbook further explains how these were specifically calculated [@texaseducationagency2025]. 
-The academic growth score is a measure of how much students improved academically over time. It is calculated using a raw growth score which is based on whether students met, exceeded, or fell short of STAAR progress (which is further defined in the data handbook). This raw growth score is then converted to a scaled score using a table, which then becomes the academic growth score, which is also measured on a 0-100 scale. 
+The overall score represents the school’s final accountability rating on a 0-100 scale. It represents a schoolwide summary of academic performance, progress, and equity. This score is calculated by using three accountability domains: Student Achievement, School Progress, and Closing the Gaps. For this score, 70% is made up of either the Student Achievement or School progress (it picks the “better outcome”) and 30% of it is from their Closing the Gaps domain score (which evaluates how well a school is supporting the performance of specific students, specifically economically disadvantaged students, students from certain racial groups, and special needs students among others). The data handbook further explains how these were specifically calculated [@texaseducationagency2025]. The academic growth score is a measure of how much students improved academically over time. It is calculated using a raw growth score which is based on whether students met, exceeded, or fell short of STAAR progress (which is further defined in the data handbook). This raw growth score is then converted to a scaled score using a table, which then becomes the academic growth score, which is also measured on a 0-100 scale.
 
 The distinction score indicators are calculated by comparing a school’s performance on multiple indicators to a group of similar campuses. If it places in the top quartile on at least 50% of indicators (for elementary and middle school) or 33% (for high school), it received the distinction. This means that the distinction score is whether or not the school performed exceptionally well compared to similar schools, and is a binary value of 0 (no distinction) or 1 (distinction) across multiple categories.
 
-The percentage of students who are economically disadvantaged represents the percentage of students who are economically disadvantaged according to a few criteria. These include eligibility for free and reduced lunch prices and SNAP/TANF participation. 
+The percentage of students who are economically disadvantaged represents the percentage of students who are economically disadvantaged according to a few criteria. These include eligibility for free and reduced lunch prices and SNAP/TANF participation.
 
-We also looked at the number of students in each school, which is a number representing the number of students enrolled in each campus. 
+We also looked at the number of students in each school, which is a number representing the number of students enrolled in each campus.
+
+### Data Processing Steps :
+
+1.  The dataframe had column names that were either capitalized inconsistently/had multiple spaces in between words; which made parsing the names harder for R to work on. So we cleaned the column names. (e.g., `School Progress Score` $\rightarrow$ `school_progress_score`)
+
+2.  The data was filtered to grades 09-12 using `grades_served` column to keep our results consistent and specific to only high school students.
+
+3.  There were 7 columns of distinction for each school (Distinction ELA/Reading, Distinction Mathematics, Distinction Science, Distinction Soc Studies,Distinction Progress, DIstinction Closing the Gaps, Distinction PostSecondary Readiness). All of them had values of `Earned`, `Not Earned`, `NA`. We reshaped this wide data into long data and merged it into one single column named `distinction_status`.
+
+4.  However, after creating the distinction_status column, each school had seven rows. To prevent this from creating inconsistencies in the results of the chosen model later, we created an additional column, `distinction_score`, which counts the number of times each school earned distinction out of seven and assigns a single score to each school.
+
+5.  We removed all the rows with NA values.
+
+6.  While working on this data set, the numeric variables had their values as characters and not numeric. So we converted them to numeric values for building our model.
+
+7.  The final variables selected to later assess on are : `Number_of_students`,`academic_growth_score`, `percent_economically_disadvantaged,overall_score`, `school_progress_score`,`distinction_score`,
+`campus`,`district\`
+
+<center>
+
+#### Data Observations Flow
+
+**Initial dataset:** 10,253 observations
+
+↓
+
+**Filtered to grades 9–12:** 1,394 observations
+
+↓
+
+**After NA removal:** 1,356 observations
+
+</center>
