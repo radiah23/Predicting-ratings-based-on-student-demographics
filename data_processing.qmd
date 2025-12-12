@@ -103,6 +103,14 @@ final_df <- final_df|>
 ```
 
 ```{r}
+na_values <- which(! complete.cases(final_df))
+
+final_df <- final_df[complete.cases(final_df),]
+
+```
+
+
+```{r}
 colnames(final_df)
 ```
 
@@ -219,10 +227,17 @@ std_resid_id <- augment_df |> filter(.std.resid < -2 | .std.resid > 2) |> select
 #dont run this again. This is indexed so it will remove the wrong stuff if you do
 final_df <-final_df[-1130,]
 final_df <-final_df[-892,]
-final_df <-final_df[-541, ]
 final_df <-final_df[-389, ]
 final_df <-final_df[-333, ]
 ```
+
+
+```{r}
+new_model <- lm(overall_score ~ academic_growth_score+distinction_score+ school_progress_score + percent_economically_disadvantaged+number_of_students, data = final_df )
+summary(new_model)
+```
+
+
 
 
 
