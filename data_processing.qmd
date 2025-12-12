@@ -240,21 +240,9 @@ final_df <-final_df[-892,]
 final_df <-final_df[-389, ]
 final_df <-final_df[-333, ]
 ```
-<<<<<<< HEAD
-
-=======
->>>>>>> 28dc54eb16d989c904f96e2602ba1e1718b4b34b
 
 ```{r}
 new_model <- lm(overall_score ~ academic_growth_score+distinction_score+ school_progress_score + percent_economically_disadvantaged+number_of_students, data = final_df )
 summary(new_model)
 ```
 
-
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> 28dc54eb16d989c904f96e2602ba1e1718b4b34b
