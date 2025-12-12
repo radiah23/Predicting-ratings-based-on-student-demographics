@@ -169,6 +169,16 @@ ggplot(reduced_model |> augment(), aes(x= .fitted, y = .resid)) +
 #Model Selection
 
 ```{r}
+add1(reduced_model,
+     scope = ~ number_of_students +
+              academic_growth_score +
+              percent_economically_disadvantaged +
+              school_progress_score +
+              distinction_score,
+     test = "F")
+```
+
+```{r}
 #Forward --> AIC metric
 step(reduced_model, scope = list(lower = reduced_model,
                                  upper = full_model),
@@ -230,6 +240,7 @@ final_df <-final_df[-892,]
 final_df <-final_df[-389, ]
 final_df <-final_df[-333, ]
 ```
+<<<<<<< HEAD
 
 
 ```{r}
@@ -241,3 +252,5 @@ summary(new_model)
 
 
 
+=======
+>>>>>>> c64dae4adcb56fb131e253929ef97f1e7341600d
