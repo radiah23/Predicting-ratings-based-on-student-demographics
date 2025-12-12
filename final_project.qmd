@@ -169,3 +169,16 @@ final_df <- filtered_df_pivoted |>
 final_df
 
 ```
+
+# Methods
+
+The data set used in this report is from the Texas Education Agency’s 2025 State, Region, District, and Campus-Level Accountability Report. The data in this report originates from public and charter schools in Texas overseen by the Texas Education Agency (TEA), who are required to submit all student standardized tests and other academic performance data [@texaseducationagency2025]. Each observation in this data set represents a different campus. The original data contains many variables related to school performance, but in this paper we will focus on schools’ Overall Score, their Academic Growth Scores, their Distinction Scores, the number of students, and the percentage of students who are economically disadvantaged. 
+
+The overall score represents the school’s final accountability rating on a 0-100 scale. It represents a schoolwide summary of academic performance, progress, and equity. This score is calculated by using three accountability domains: Student Achievement, School Progress, and Closing the Gaps. For this score, 70% is made up of either the Student Achievement or School progress (it picks the “better outcome”) and 30% of it is from their Closing the Gaps domain score (which evaluates how well a school is supporting the performance of specific students, specifically economically disadvantaged students, students from certain racial groups, and special needs students among others). The data handbook further explains how these were specifically calculated [@texaseducationagency2025]. 
+The academic growth score is a measure of how much students improved academically over time. It is calculated using a raw growth score which is based on whether students met, exceeded, or fell short of STAAR progress (which is further defined in the data handbook). This raw growth score is then converted to a scaled score using a table, which then becomes the academic growth score, which is also measured on a 0-100 scale. 
+
+The distinction score indicators are calculated by comparing a school’s performance on multiple indicators to a group of similar campuses. If it places in the top quartile on at least 50% of indicators (for elementary and middle school) or 33% (for high school), it received the distinction. This means that the distinction score is whether or not the school performed exceptionally well compared to similar schools, and is a binary value of 0 (no distinction) or 1 (distinction) across multiple categories.
+
+The percentage of students who are economically disadvantaged represents the percentage of students who are economically disadvantaged according to a few criteria. These include eligibility for free and reduced lunch prices and SNAP/TANF participation. 
+
+We also looked at the number of students in each school, which is a number representing the number of students enrolled in each campus. 
