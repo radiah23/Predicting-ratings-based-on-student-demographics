@@ -88,7 +88,7 @@ ggplot(highest_10_region, aes(x = reorder(district, avg_disadvantaged),
       
 ```
 
-The horizontal bar chart of the ten districts with the lowest average percent economically disadvantaged highlights a small group of districts and charter schools with very low concentrations of economically disadvantaged students. Brock ISD and Trivium Academy stand out at the top of this list, followed by Leadership Prep School and a mix of charter and small district programs; the x-axis values show these averages are near or below single-digit percentages. This pattern suggests these districts are outliers in the dataset, and because they are small or specialized (charter and specialty schools), their demographic profiles differ substantially from the statewide mix — an important caveat when comparing demographic measures to performance outcomes.
+The horizontal bar chart of the ten districts with the highest average percent economically disadvantaged highlights a small group of districts and charter schools with very high concentrations of economically disadvantaged students.This shows Schools with 100% or near 100% are a mix between charter and public alternative schools. Additionally, 9 out of 10 of these schools are also within highly metropolitan areas.
 
 ## Plot 2 "Overall Rating"
 
