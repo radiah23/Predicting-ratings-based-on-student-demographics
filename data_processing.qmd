@@ -141,7 +141,6 @@ reduced_model <-
 summary(reduced_model)
 ```
 
-
 ```{r}
 plot(reduced_model)
 ```
@@ -150,6 +149,22 @@ plot(reduced_model)
 full_model <- 
   lm(overall_score ~ academic_growth_score+distinction_score+ school_progress_score + percent_economically_disadvantaged+number_of_students, data = final_df )
 summary(full_model)
+```
+
+```{r}
+
+plot_p <- data.frame(
+  Predictors = c("Academic Growth Score","Distinction Score","School Progress Score","Percent Economically Disadvantaged", "Number of Students" ),
+  P_value = c(0.0000167, 0.0000000, 0.0000000, 0.0000000, 0.0346073)
+)
+
+ggplot(plot_p, aes(x=P_value, y = Predictors))+
+  geom_point(size = 2)+ 
+  geom_vline(xintercept = 0.05, color = "red")+
+  coord_cartesian(xlim = c(-0.01, 0.08)) +
+  labs(x= "P-Value", y = "Predictors", title= "Significance of Predictors")+
+  theme_minimal()+
+  theme(axis.text.y = element_text(angle = 35, hjust = 1),plot.title = element_text(hjust = 0.5, face = "bold"))
 ```
 
 
